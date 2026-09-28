@@ -126,8 +126,8 @@ Copy the remote repository URL from GitHub and run:
 # Set default branch to main
 git branch -M main
 
-# Add your GitHub repository remote origin URL (replace with your actual GitHub URL)
-git remote add origin https://github.com/YOUR-USERNAME/todo-list-fastapi-app.git
+# Add your GitHub repository remote origin URL
+git remote add origin https://github.com/Sathyajith13-ENG/TO-DO-List--fastAPI.git
 ```
 
 ### Step 4: Push to GitHub
