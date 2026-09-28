@@ -90,3 +90,51 @@ Open your web browser and navigate to:
    - `app.js` runs on DOM completion, executing `fetch('/api/todos')` to fetch all current tasks asynchronously.
    - When a user submits a task, toggles completion, edits, or deletes an item, `app.js` sends asynchronous `fetch()` requests (`POST`, `PATCH`, `PUT`, `DELETE`) to the Python REST backend.
    - The UI updates dynamically without any page reloads, accompanied by animated toast feedback notifications.
+
+---
+
+## 📤 How to Push to GitHub (Step-by-Step)
+
+Follow these step-by-step instructions to upload this project repository to GitHub:
+
+### Step 1: Create a New Repository on GitHub
+1. Log in to your account at **[github.com](https://github.com)**.
+2. Click the **`+`** icon in the top-right corner and select **New repository**.
+3. Enter a repository name (e.g., `todo-list-fastapi-app`).
+4. Choose **Public** or **Private** visibility.
+5. **Do NOT** check "Add a README file", ".gitignore", or license (since we have already created them locally).
+6. Click **Create repository**.
+
+### Step 2: Initialize Git and Commit Files Locally
+Open your terminal/PowerShell in the project folder (`c:\Users\USER\OneDrive\Pictures\Documents\Desktop\PYTHON LEARNING\mini projects\to-do list API`) and run:
+
+```bash
+# Initialize local Git repository
+git init
+
+# Stage all project files
+git add .
+
+# Create initial commit
+git commit -m "Initial commit: TaskPulse To-Do List Application"
+```
+
+### Step 3: Link Local Repository to GitHub
+Copy the remote repository URL from GitHub and run:
+
+```bash
+# Set default branch to main
+git branch -M main
+
+# Add your GitHub repository remote origin URL (replace with your actual GitHub URL)
+git remote add origin https://github.com/YOUR-USERNAME/todo-list-fastapi-app.git
+```
+
+### Step 4: Push to GitHub
+```bash
+# Push local commits to remote GitHub repository
+git push -u origin main
+```
+
+---
+
