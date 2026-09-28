@@ -1,0 +1,2 @@
+fastapi>=0.100.0   # Fast, high-performance web framework for building APIs with Python
+uvicorn>=0.22.0    # Lightning-fast ASGI server implementation to run FastAPI app

@@ -1,0 +1,281 @@
+<!DOCTYPE html> <!-- Specify HTML5 document type standards mode -->
+<html lang="en" data-theme="dark"> <!-- Begin root HTML element with default dark theme data attribute -->
+<head> <!-- Open document head container for metadata, stylesheets, and fonts -->
+  <meta charset="UTF-8"> <!-- Set character encoding declaration to UTF-8 standard -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configure responsive mobile viewport scale -->
+  <title>TaskPulse - Modern Task & To-Do Manager</title> <!-- Set browser window title text -->
+  <meta name="description" content="A vibrant, modern, high-performance To-Do List application built with FastAPI Python backend and modern web UI."> <!-- Add meta description tag for search engine optimization -->
+
+  <!-- Google Fonts: Import 'Outfit' font family for sleek modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Preconnect domain to speed up Google fonts retrieval -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- Preconnect static CDN domain with cross-origin enabled -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"> <!-- Load Outfit font styles -->
+
+  <!-- Font Awesome Icons: Load icon library for visual buttons, category tags, and action controls -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- Load FontAwesome CDN library stylesheet -->
+
+  <!-- Application Main Stylesheet -->
+  <link rel="stylesheet" href="/static/styles.css"> <!-- Link custom stylesheet stylesheet file -->
+</head> <!-- Close head section -->
+<body> <!-- Open visible web page body container -->
+
+  <!-- Main Application Wrapper with Background Glow Accents -->
+  <div class="app-wrapper"> <!-- Enclosing outer container box -->
+    
+    <!-- Background Ambient Glow Effects -->
+    <div class="glow-orb orb-1"></div> <!-- Top left decorative color ambient glow circle -->
+    <div class="glow-orb orb-2"></div> <!-- Bottom right decorative color ambient glow circle -->
+
+    <!-- Header Section with Brand Logo, Date, and Theme Toggle -->
+    <header class="app-header"> <!-- Header semantic layout element -->
+      <div class="brand-container"> <!-- Container grouping brand icon and main title -->
+        <div class="logo-badge"> <!-- Icon badge square with gradient background -->
+          <i class="fa-solid fa-check-double"></i> <!-- Visual checkmark double icon -->
+        </div> <!-- Close logo badge -->
+        <div class="brand-text"> <!-- Text block grouping app title and tag line -->
+          <h1 class="app-title">TaskPulse</h1> <!-- Main application header level 1 title -->
+          <p class="app-subtitle" id="current-date">Loading date...</p> <!-- Subtitle displaying live formatted current date string -->
+        </div> <!-- Close brand text -->
+      </div> <!-- Close brand container -->
+
+      <div class="header-actions"> <!-- Right aligned header button actions section -->
+        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme"> <!-- Theme toggle icon button -->
+          <i class="fa-solid fa-moon" id="theme-icon"></i> <!-- Dark/Light mode moon icon -->
+        </button> <!-- Close theme button -->
+      </div> <!-- Close header actions -->
+    </header> <!-- Close app header -->
+
+    <!-- Quick Statistics & Progress Overview Panel -->
+    <section class="stats-card"> <!-- Statistics section card -->
+      <div class="stats-item"> <!-- Individual stat metric item block for total tasks -->
+        <span class="stat-number" id="stat-total">0</span> <!-- Display counter number for total tasks count -->
+        <span class="stat-label">Total Tasks</span> <!-- Metric title label -->
+      </div> <!-- Close total stat item -->
+
+      <div class="stat-divider"></div> <!-- Vertical visual divider bar line -->
+
+      <div class="stats-item"> <!-- Individual stat metric item block for pending tasks -->
+        <span class="stat-number stat-pending" id="stat-pending">0</span> <!-- Display counter number for active pending tasks -->
+        <span class="stat-label">Pending</span> <!-- Metric title label -->
+      </div> <!-- Close pending stat item -->
+
+      <div class="stat-divider"></div> <!-- Vertical visual divider bar line -->
+
+      <div class="stats-item"> <!-- Individual stat metric item block for completed tasks -->
+        <span class="stat-number stat-completed" id="stat-completed">0</span> <!-- Display counter number for completed tasks -->
+        <span class="stat-label">Completed</span> <!-- Metric title label -->
+      </div> <!-- Close completed stat item -->
+
+      <div class="progress-bar-container"> <!-- Progress bar outer shell wrapper -->
+        <div class="progress-fill" id="progress-bar-fill"></div> <!-- Dynamic glowing progress bar fill line -->
+      </div> <!-- Close progress bar container -->
+    </section> <!-- Close stats card section -->
+
+    <!-- Main Content Area: Divided into Task Creation Form & Task List Section -->
+    <main class="main-content"> <!-- Main grid layout section -->
+      
+      <!-- Left / Top Column: Interactive Task Creation Card Form -->
+      <section class="task-form-card"> <!-- Form container card element -->
+        <h2 class="form-title"><i class="fa-solid fa-circle-plus"></i> Create New Task</h2> <!-- Card header title with icon -->
+
+        <form id="todo-form" autocomplete="off"> <!-- HTML Form element for task input submission -->
+          
+          <!-- Input Group: Task Title Text Input -->
+          <div class="form-group"> <!-- Wrapper for title label and input field -->
+            <label for="task-title-input">Task Title <span class="required-star">*</span></label> <!-- Input field label text -->
+            <div class="input-icon-wrapper"> <!-- Input wrapper container with icon padding -->
+              <i class="fa-solid fa-pencil input-icon"></i> <!-- Pencil icon indicator -->
+              <input type="text" id="task-title-input" class="form-control" placeholder="What needs to be done?" required max-length="150"> <!-- Required text input for task title -->
+            </div> <!-- Close input wrapper -->
+          </div> <!-- Close form group -->
+
+          <!-- Input Row: Category Select & Priority Selector -->
+          <div class="form-row"> <!-- Flexible two-column layout row -->
+            
+            <!-- Category Select Dropdown -->
+            <div class="form-group col-half"> <!-- Half-width form column wrapper -->
+              <label for="task-category-select">Category</label> <!-- Input category label -->
+              <div class="input-icon-wrapper"> <!-- Input wrapper container with dropdown icon -->
+                <i class="fa-solid fa-folder input-icon"></i> <!-- Folder category icon -->
+                <select id="task-category-select" class="form-control"> <!-- Category options select dropdown -->
+                  <option value="Personal">🏠 Personal</option> <!-- Option: Personal -->
+                  <option value="Work">💼 Work</option> <!-- Option: Work -->
+                  <option value="Shopping">🛒 Shopping</option> <!-- Option: Shopping -->
+                  <option value="Health">🏥 Health</option> <!-- Option: Health -->
+                  <option value="Urgent">⚡ Urgent</option> <!-- Option: Urgent -->
+                </select> <!-- Close select tag -->
+              </div> <!-- Close input icon wrapper -->
+            </div> <!-- Close category column -->
+
+            <!-- Priority Select Dropdown -->
+            <div class="form-group col-half"> <!-- Half-width form column wrapper -->
+              <label for="task-priority-select">Priority</label> <!-- Priority select label -->
+              <div class="input-icon-wrapper"> <!-- Input wrapper container with priority flag icon -->
+                <i class="fa-solid fa-flag input-icon"></i> <!-- Priority flag icon -->
+                <select id="task-priority-select" class="form-control"> <!-- Priority select dropdown -->
+                  <option value="Low">🟢 Low</option> <!-- Option: Low Priority -->
+                  <option value="Medium" selected>🟡 Medium</option> <!-- Option: Medium Priority (default) -->
+                  <option value="High">🔴 High</option> <!-- Option: High Priority -->
+                </select> <!-- Close priority select -->
+              </div> <!-- Close priority wrapper -->
+            </div> <!-- Close priority column -->
+
+          </div> <!-- Close form row -->
+
+          <!-- Input Row: Due Date Input -->
+          <div class="form-group"> <!-- Form group wrapper for target deadline input -->
+            <label for="task-due-date-input">Due Date (Optional)</label> <!-- Due date field label -->
+            <div class="input-icon-wrapper"> <!-- Input wrapper container with calendar icon -->
+              <i class="fa-solid fa-calendar-days input-icon"></i> <!-- Calendar calendar icon -->
+              <input type="date" id="task-due-date-input" class="form-control"> <!-- HTML5 date picker input -->
+            </div> <!-- Close input icon wrapper -->
+          </div> <!-- Close form group -->
+
+          <!-- Input Group: Optional Task Description Area -->
+          <div class="form-group"> <!-- Form group wrapper for description -->
+            <label for="task-desc-input">Description (Optional)</label> <!-- Description field label -->
+            <textarea id="task-desc-input" class="form-control textarea-control" rows="3" placeholder="Add additional details or notes..."></textarea> <!-- Multi-line text area -->
+          </div> <!-- Close form group -->
+
+          <!-- Form Submit Action Button -->
+          <button type="submit" id="add-task-btn" class="btn btn-primary btn-block"> <!-- Submit button element -->
+            <i class="fa-solid fa-plus"></i> Add Task <!-- Button icon and text label -->
+          </button> <!-- Close submit button -->
+
+        </form> <!-- Close todo input form -->
+      </section> <!-- Close task form section card -->
+
+      <!-- Right Column: Task List, Search & Filtering Controls -->
+      <section class="task-list-section"> <!-- Section container for task filters and card list -->
+        
+        <!-- Filter & Search Control Toolbar Box -->
+        <div class="toolbar-card"> <!-- Card wrapper box for toolbar controls -->
+          
+          <!-- Search Input Control Bar -->
+          <div class="search-box"> <!-- Search container wrapper -->
+            <i class="fa-solid fa-magnifying-glass search-icon"></i> <!-- Search magnifying icon -->
+            <input type="text" id="search-input" class="search-control" placeholder="Search tasks by title or detail..."> <!-- Real-time search filter text input -->
+            <button id="clear-search-btn" class="clear-btn hidden" title="Clear Search"><i class="fa-solid fa-xmark"></i></button> <!-- Quick clear search button -->
+          </div> <!-- Close search box -->
+
+          <!-- Filter Controls Layout Row -->
+          <div class="filter-controls-row"> <!-- Layout container for status tabs and category filter -->
+            
+            <!-- Status Segmented Filter Tabs -->
+            <div class="status-tabs"> <!-- Tab button group container -->
+              <button class="tab-btn active" data-filter="all">All</button> <!-- Filter tab: Show all tasks -->
+              <button class="tab-btn" data-filter="pending">Pending</button> <!-- Filter tab: Show pending active tasks -->
+              <button class="tab-btn" data-filter="completed">Completed</button> <!-- Filter tab: Show completed tasks -->
+            </div> <!-- Close status tabs -->
+
+            <!-- Category Filter Dropdown -->
+            <div class="filter-dropdown-group"> <!-- Wrapper for category filter select -->
+              <select id="category-filter-select" class="filter-select"> <!-- Category filter selector -->
+                <option value="all">All Categories</option> <!-- Filter option: All categories -->
+                <option value="Personal">Personal</option> <!-- Filter option: Personal tasks -->
+                <option value="Work">Work tasks</option> <!-- Filter option: Work tasks -->
+                <option value="Shopping">Shopping tasks</option> <!-- Filter option: Shopping tasks -->
+                <option value="Health">Health tasks</option> <!-- Filter option: Health tasks -->
+                <option value="Urgent">Urgent tasks</option> <!-- Filter option: Urgent tasks -->
+              </select> <!-- Close filter dropdown -->
+            </div> <!-- Close filter group -->
+
+          </div> <!-- Close filter controls row -->
+
+        </div> <!-- Close toolbar card box -->
+
+        <!-- Dynamic Tasks List Container Element -->
+        <div id="task-list" class="task-list"> <!-- Dynamic DOM container where task item cards are rendered -->
+          <!-- Dynamic task items will be created and appended here via app.js -->
+        </div> <!-- Close task list -->
+
+        <!-- Empty State View Placeholder (Displayed when no tasks match query) -->
+        <div id="empty-state" class="empty-state hidden"> <!-- Empty view container hidden by default -->
+          <div class="empty-icon"><i class="fa-solid fa-clipboard-check"></i></div> <!-- Large illustrative checklist icon -->
+          <h3 class="empty-title">No Tasks Found</h3> <!-- Empty state main title message -->
+          <p class="empty-desc">You're all caught up or no tasks match your current search/filter criteria!</p> <!-- Empty state detail text -->
+        </div> <!-- Close empty state container -->
+
+      </section> <!-- Close task list section -->
+
+    </main> <!-- Close main content area -->
+
+  </div> <!-- Close app wrapper container -->
+
+  <!-- Edit Task Modal Dialog Container Overlay -->
+  <div id="edit-modal-overlay" class="modal-overlay hidden"> <!-- Darkened backdrop overlay container -->
+    <div class="modal-card"> <!-- Centered modal dialog card window -->
+      
+      <!-- Modal Window Header -->
+      <div class="modal-header"> <!-- Header row container -->
+        <h3 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Edit Task</h3> <!-- Modal heading with pencil edit icon -->
+        <button id="close-modal-btn" class="icon-btn-close" aria-label="Close Modal"><i class="fa-solid fa-xmark"></i></button> <!-- Close modal button -->
+      </div> <!-- Close modal header -->
+
+      <!-- Modal Edit Task Form -->
+      <form id="edit-task-form"> <!-- Form element for editing task fields -->
+        <input type="hidden" id="edit-task-id"> <!-- Hidden input storing task ID being edited -->
+
+        <div class="form-group"> <!-- Edit Title field group -->
+          <label for="edit-task-title">Title <span class="required-star">*</span></label> <!-- Edit title label -->
+          <input type="text" id="edit-task-title" class="form-control" required max-length="150"> <!-- Edit title text input -->
+        </div> <!-- Close title group -->
+
+        <div class="form-row"> <!-- Edit Category and Priority form row -->
+          <div class="form-group col-half"> <!-- Category column -->
+            <label for="edit-task-category">Category</label> <!-- Category label -->
+            <select id="edit-task-category" class="form-control"> <!-- Category dropdown options -->
+              <option value="Personal">🏠 Personal</option> <!-- Personal category -->
+              <option value="Work">💼 Work</option> <!-- Work category -->
+              <option value="Shopping">🛒 Shopping</option> <!-- Shopping category -->
+              <option value="Health">🏥 Health</option> <!-- Health category -->
+              <option value="Urgent">⚡ Urgent</option> <!-- Urgent category -->
+            </select> <!-- Close category dropdown -->
+          </div> <!-- Close category column -->
+
+          <div class="form-group col-half"> <!-- Priority column -->
+            <label for="edit-task-priority">Priority</label> <!-- Priority label -->
+            <select id="edit-task-priority" class="form-control"> <!-- Priority select options -->
+              <option value="Low">🟢 Low</option> <!-- Low priority option -->
+              <option value="Medium">🟡 Medium</option> <!-- Medium priority option -->
+              <option value="High">🔴 High</option> <!-- High priority option -->
+            </select> <!-- Close priority dropdown -->
+          </div> <!-- Close priority column -->
+        </div> <!-- Close form row -->
+
+        <div class="form-group"> <!-- Edit Due Date group -->
+          <label for="edit-task-due-date">Due Date</label> <!-- Due date field label -->
+          <input type="date" id="edit-task-due-date" class="form-control"> <!-- Date picker input element -->
+        </div> <!-- Close due date group -->
+
+        <div class="form-group"> <!-- Edit Description group -->
+          <label for="edit-task-desc">Description</label> <!-- Description field label -->
+          <textarea id="edit-task-desc" class="form-control textarea-control" rows="3"></textarea> <!-- Text area for updating task note -->
+        </div> <!-- Close description group -->
+
+        <div class="form-group checkbox-group"> <!-- Form group for completion status checkbox -->
+          <label class="custom-checkbox-label"> <!-- Label wrapping custom styled checkbox -->
+            <input type="checkbox" id="edit-task-completed"> <!-- Checkbox input for completion status -->
+            <span class="custom-checkbox-box"></span> <!-- Custom checkbox box styling element -->
+            <span class="checkbox-text-label">Mark as completed</span> <!-- Label text -->
+          </label> <!-- Close checkbox label -->
+        </div> <!-- Close completion checkbox group -->
+
+        <!-- Modal Footer Action Buttons -->
+        <div class="modal-footer"> <!-- Footer actions container -->
+          <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button> <!-- Cancel modal edit button -->
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button> <!-- Save updated task changes button -->
+        </div> <!-- Close modal footer -->
+
+      </form> <!-- Close edit form -->
+
+    </div> <!-- Close modal card window -->
+  </div> <!-- Close edit modal overlay -->
+
+  <!-- Dynamic Toast Feedback Notification Floating Container -->
+  <div id="toast-container" class="toast-container"></div> <!-- Container element where pop-up notification messages are injected -->
+
+  <!-- Application Main JavaScript Logic -->
+  <script src="/static/app.js"></script> <!-- Import frontend JavaScript app logic -->
+</body> <!-- Close body -->
+</html> <!-- Close html element -->

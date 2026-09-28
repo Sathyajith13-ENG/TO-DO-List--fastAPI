@@ -1,0 +1,992 @@
+/* ==========================================
+   TaskPulse Main Stylesheet - CSS Variables & Utility Reset
+   ========================================== */
+
+/* Root CSS Variables for Dark Theme (Default) */
+:root {
+  /* Main Background Gradient Colors */
+  --bg-gradient-start: #0f172a; /* Slate 900 base background color */
+  --bg-gradient-end: #1e1b4b; /* Indigo 950 gradient end color */
+
+  /* Glassmorphism Container Card Styling */
+  --card-bg: rgba(30, 41, 59, 0.75); /* Dark slate semi-transparent glass background */
+  --card-bg-solid: #1e293b; /* Solid slate background fallback */
+  --card-border: rgba(255, 255, 255, 0.08); /* Subtle crisp container border stroke */
+
+  /* Typography Colors */
+  --text-main: #f8fafc; /* Crisp primary text color */
+  --text-muted: #94a3b8; /* Muted secondary caption text color */
+  --text-subtle: #64748b; /* Subtle tertiary text color */
+
+  /* Primary Accent & Action Colors */
+  --accent-primary: #6366f1; /* Vibrant Indigo primary accent color */
+  --accent-primary-hover: #4f46e5; /* Primary hover accent color */
+  --accent-secondary: #8b5cf6; /* Vibrant Violet secondary accent */
+  --accent-pink: #ec4899; /* Vibrant Pink gradient highlight */
+
+  /* Status Colors */
+  --color-success: #10b981; /* Emerald green completion success color */
+  --color-warning: #f59e0b; /* Amber warning color */
+  --color-danger: #ef4444; /* Rose red danger / high priority color */
+  --color-info: #3b82f6; /* Blue informational color */
+
+  /* Priority Pill Theme Colors */
+  --priority-high-bg: rgba(239, 68, 68, 0.15); /* High priority badge background */
+  --priority-high-text: #fca5a5; /* High priority badge text color */
+  --priority-med-bg: rgba(245, 158, 11, 0.15); /* Medium priority badge background */
+  --priority-med-text: #fcd34d; /* Medium priority badge text color */
+  --priority-low-bg: rgba(16, 185, 129, 0.15); /* Low priority badge background */
+  --priority-low-text: #6ee7b7; /* Low priority badge text color */
+
+  /* Input Form Controls */
+  --input-bg: rgba(15, 23, 42, 0.6); /* Input element inner shadow background */
+  --input-border: rgba(255, 255, 255, 0.12); /* Input element default border stroke */
+  --input-focus-border: #6366f1; /* Input element glowing focus border color */
+
+  /* Shadows & Radius Values */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2); /* Small subtle element shadow */
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3); /* Medium container card shadow */
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.4); /* Large modal dialog elevation shadow */
+  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.35); /* Indigo ambient glow shadow */
+
+  --radius-sm: 8px; /* Small corner border radius */
+  --radius-md: 14px; /* Medium corner border radius */
+  --radius-lg: 20px; /* Large container border radius */
+
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Fast smooth transition timing */
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Standard transition timing */
+}
+
+/* Light Theme Variable Overrides when html[data-theme="light"] */
+html[data-theme="light"] {
+  --bg-gradient-start: #f1f5f9; /* Light slate base background color */
+  --bg-gradient-end: #e0e7ff; /* Soft indigo tint background end color */
+  --card-bg: rgba(255, 255, 255, 0.85); /* Pure white semi-transparent glass card */
+  --card-bg-solid: #ffffff; /* Solid white background fallback */
+  --card-border: rgba(0, 0, 0, 0.06); /* Soft light card border stroke */
+  --text-main: #0f172a; /* Slate 900 dark main text */
+  --text-muted: #475569; /* Slate 600 muted body text */
+  --text-subtle: #94a3b8; /* Slate 400 caption text */
+  --input-bg: #ffffff; /* Bright white input field background */
+  --input-border: #cbd5e1; /* Soft slate input border */
+  --shadow-md: 0 8px 30px rgba(148, 163, 184, 0.2); /* Soft light theme card shadow */
+}
+
+/* Base Universal CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box; /* Enforce border-box model calculation across all elements */
+  margin: 0; /* Clear default browser outer margin */
+  padding: 0; /* Clear default browser inner padding */
+}
+
+/* Global Body & Document Typography Setup */
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* Set default primary font family */
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end)); /* Apply background color gradient */
+  background-attachment: fixed; /* Fix background gradient during vertical scroll */
+  color: var(--text-main); /* Apply primary text color */
+  min-height: 100vh; /* Ensure body takes minimum full viewport height */
+  line-height: 1.6; /* Set comfortable default line height spacing */
+  overflow-x: hidden; /* Prevent horizontal scrolling overflow */
+}
+
+/* App Main Content Layout Wrapper Container */
+.app-wrapper {
+  max-width: 1100px; /* Limit maximum page content layout width */
+  margin: 0 auto; /* Center page content horizontally */
+  padding: 2.5rem 1.5rem; /* Apply vertical and horizontal outer padding */
+  position: relative; /* Position relative context for absolute glow orbs */
+  z-index: 1; /* Keep content stack above ambient glow background */
+}
+
+/* Decorative Background Ambient Glow Orbs */
+.glow-orb {
+  position: fixed; /* Fix position relative to viewport window */
+  border-radius: 50%; /* Render perfect circular shape */
+  filter: blur(100px); /* Apply heavy Gaussian blur for soft glow */
+  pointer-events: none; /* Ignore pointer interactions so clicks pass through */
+  z-index: 0; /* Keep orb background elements behind UI */
+  opacity: 0.45; /* Soften opacity intensity */
+}
+
+.orb-1 {
+  width: 350px; /* Set orb 1 diameter width */
+  height: 350px; /* Set orb 1 height */
+  background: var(--accent-primary); /* Apply indigo color glow */
+  top: -80px; /* Offset top position */
+  left: -80px; /* Offset left position */
+}
+
+.orb-2 {
+  width: 400px; /* Set orb 2 diameter width */
+  height: 400px; /* Set orb 2 height */
+  background: var(--accent-pink); /* Apply vibrant pink color glow */
+  bottom: -100px; /* Offset bottom position */
+  right: -100px; /* Offset right position */
+}
+
+/* ==========================================
+   Header Section Styling
+   ========================================== */
+.app-header {
+  display: flex; /* Flexbox layout container */
+  align-items: center; /* Vertically center align brand logo and buttons */
+  justify-content: space-between; /* Space out brand info on left and actions on right */
+  margin-bottom: 2rem; /* Bottom margin separation to stats section */
+}
+
+.brand-container {
+  display: flex; /* Flexbox container */
+  align-items: center; /* Center icon and brand text vertically */
+  gap: 1.2rem; /* Gap spacing between logo badge and text */
+}
+
+.logo-badge {
+  width: 52px; /* Set fixed logo container width */
+  height: 52px; /* Set fixed logo container height */
+  border-radius: var(--radius-md); /* Apply rounded corners */
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-pink)); /* Linear gradient icon background */
+  display: flex; /* Flexbox layout to center icon */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  color: #ffffff; /* White icon color */
+  font-size: 1.6rem; /* Set icon glyph size */
+  box-shadow: var(--shadow-glow); /* Glowing box shadow highlight */
+  transition: transform var(--transition-fast); /* Smooth scaling hover transition */
+}
+
+.logo-badge:hover {
+  transform: scale(1.06) rotate(-3deg); /* Slight scale bounce and rotation on hover */
+}
+
+.app-title {
+  font-size: 2.1rem; /* Set bold title font size */
+  font-weight: 700; /* Extra bold font weight */
+  letter-spacing: -0.5px; /* Tight letter spacing */
+  background: linear-gradient(90deg, var(--text-main), var(--accent-secondary)); /* Text gradient fill */
+  -webkit-background-clip: text; /* Clip background gradient to font character shapes */
+  -webkit-text-fill-color: transparent; /* Render text color transparent to display gradient */
+}
+
+.app-subtitle {
+  font-size: 0.92rem; /* Subtitle font size */
+  color: var(--text-muted); /* Apply muted secondary text color */
+  font-weight: 400; /* Regular font weight */
+}
+
+/* Top Header Action Buttons */
+.header-actions {
+  display: flex; /* Flex container */
+  gap: 0.75rem; /* Gap spacing between action buttons */
+}
+
+.icon-btn {
+  width: 44px; /* Set icon button width */
+  height: 44px; /* Set icon button height */
+  border-radius: var(--radius-md); /* Round border corners */
+  background: var(--card-bg); /* Apply semi-transparent glass background */
+  border: 1px solid var(--card-border); /* Apply container border stroke */
+  color: var(--text-main); /* Text/Icon color */
+  font-size: 1.2rem; /* Icon size */
+  cursor: pointer; /* Pointer cursor on hover */
+  display: flex; /* Flex container */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  backdrop-filter: blur(12px); /* Apply glassmorphism blur backdrop */
+  transition: all var(--transition-fast); /* Smooth transition on hover */
+}
+
+.icon-btn:hover {
+  background: var(--accent-primary); /* Change background to accent on hover */
+  color: #ffffff; /* Change icon color to white */
+  transform: translateY(-2px); /* Subtle upward float effect */
+  box-shadow: var(--shadow-glow); /* Glowing box shadow */
+}
+
+/* ==========================================
+   Statistics Overview Bar Card
+   ========================================== */
+.stats-card {
+  background: var(--card-bg); /* Glassmorphism background */
+  backdrop-filter: blur(16px); /* Glass blur effect */
+  border: 1px solid var(--card-border); /* Border stroke */
+  border-radius: var(--radius-lg); /* Rounded container corners */
+  padding: 1.4rem 2rem; /* Card inner padding */
+  display: flex; /* Flex layout */
+  align-items: center; /* Vertically center content */
+  justify-content: space-between; /* Space out metric items evenly */
+  gap: 1.5rem; /* Gap spacing */
+  box-shadow: var(--shadow-md); /* Container elevation shadow */
+  margin-bottom: 2rem; /* Spacing before main grid layout */
+  position: relative; /* Position relative context for progress bar overlay */
+  overflow: hidden; /* Clip inner elements inside rounded radius */
+}
+
+.stats-item {
+  display: flex; /* Flex container */
+  flex-direction: column; /* Stack number count above label text */
+  align-items: center; /* Center align text */
+}
+
+.stat-number {
+  font-size: 1.75rem; /* Bold metric counter size */
+  font-weight: 700; /* Bold weight */
+  color: var(--text-main); /* Default number color */
+  line-height: 1.2; /* Line height */
+}
+
+.stat-pending {
+  color: var(--color-warning); /* Yellow amber color for pending count */
+}
+
+.stat-completed {
+  color: var(--color-success); /* Green color for completed count */
+}
+
+.stat-label {
+  font-size: 0.82rem; /* Caption label font size */
+  color: var(--text-muted); /* Muted label color */
+  text-transform: uppercase; /* Uppercase metric title */
+  letter-spacing: 0.8px; /* Letter spacing */
+  font-weight: 500; /* Medium weight */
+}
+
+.stat-divider {
+  width: 1px; /* Divider stroke width */
+  height: 32px; /* Divider height line */
+  background: var(--card-border); /* Border line color */
+}
+
+.progress-bar-container {
+  position: absolute; /* Absolutely position progress bar at card bottom edge */
+  bottom: 0; /* Anchor to bottom */
+  left: 0; /* Anchor left */
+  width: 100%; /* Stretch across full width */
+  height: 5px; /* Thin progress height bar */
+  background: rgba(255, 255, 255, 0.05); /* Soft container backdrop track */
+}
+
+.progress-fill {
+  height: 100%; /* Fill entire bar height */
+  width: 0%; /* Initial width updated via JS */
+  background: linear-gradient(90deg, var(--accent-primary), var(--color-success)); /* Gradient fill */
+  transition: width var(--transition-normal); /* Smooth width animation when task count updates */
+  border-radius: 0 4px 4px 0; /* Rounded right tip */
+}
+
+/* ==========================================
+   Main Content Grid Layout
+   ========================================== */
+.main-content {
+  display: grid; /* CSS Grid layout */
+  grid-template-columns: 360px 1fr; /* Form panel 360px width, task list takes remaining flexible space */
+  gap: 2rem; /* Column gap spacing */
+  align-items: start; /* Align grid columns to top */
+}
+
+/* ==========================================
+   Task Creation Form Card
+   ========================================== */
+.task-form-card {
+  background: var(--card-bg); /* Semi-transparent glass background */
+  backdrop-filter: blur(16px); /* Glass backdrop filter */
+  border: 1px solid var(--card-border); /* Card border stroke */
+  border-radius: var(--radius-lg); /* Rounded card corners */
+  padding: 1.8rem; /* Inner form padding */
+  box-shadow: var(--shadow-md); /* Card elevation shadow */
+  position: sticky; /* Sticky position so form stays visible during vertical scroll */
+  top: 1.5rem; /* Top sticky offset distance */
+}
+
+.form-title {
+  font-size: 1.25rem; /* Form section heading size */
+  font-weight: 600; /* Semi-bold weight */
+  margin-bottom: 1.4rem; /* Spacing below section heading */
+  display: flex; /* Flex container */
+  align-items: center; /* Align icon and text vertically */
+  gap: 0.6rem; /* Gap spacing */
+  color: var(--text-main); /* Text color */
+}
+
+.form-title i {
+  color: var(--accent-primary); /* Accent icon color */
+}
+
+.form-group {
+  margin-bottom: 1.2rem; /* Spacing between form input groups */
+}
+
+.form-group label {
+  display: block; /* Render label on its own line */
+  font-size: 0.88rem; /* Label font size */
+  font-weight: 500; /* Medium weight */
+  color: var(--text-muted); /* Secondary text color */
+  margin-bottom: 0.45rem; /* Spacing between label and input box */
+}
+
+.required-star {
+  color: var(--color-danger); /* Red color for required star indicator */
+}
+
+.input-icon-wrapper {
+  position: relative; /* Relative container for positioning absolute icons */
+  display: flex; /* Flex container */
+  align-items: center; /* Center icon vertically */
+}
+
+.input-icon {
+  position: absolute; /* Absolutely position icon inside input field */
+  left: 14px; /* Icon left padding offset */
+  color: var(--text-subtle); /* Subtle icon color */
+  font-size: 0.95rem; /* Icon font size */
+  pointer-events: none; /* Ignore pointer clicks on icon */
+  z-index: 2; /* Keep icon above input background */
+}
+
+.form-control {
+  width: 100%; /* Take full width of parent column */
+  padding: 0.75rem 0.9rem 0.75rem 2.6rem; /* Inner text padding accounting for left icon */
+  background: var(--input-bg); /* Apply input background color */
+  border: 1px solid var(--input-border); /* Apply border stroke */
+  border-radius: var(--radius-md); /* Rounded input corners */
+  color: var(--text-main); /* Input text color */
+  font-family: inherit; /* Inherit Outfit font family */
+  font-size: 0.95rem; /* Font size */
+  outline: none; /* Remove default browser focus outline ring */
+  transition: all var(--transition-fast); /* Smooth transition on focus */
+}
+
+.form-control:focus {
+  border-color: var(--input-focus-border); /* Glowing border color on focus */
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* Glowing ring shadow on focus */
+}
+
+.textarea-control {
+  padding-left: 0.9rem; /* Standard left padding for text area without icon */
+  resize: vertical; /* Allow user vertical resize only */
+  min-height: 80px; /* Set minimum text area height */
+}
+
+.form-row {
+  display: flex; /* Flex container row */
+  gap: 0.8rem; /* Gap between columns */
+}
+
+.col-half {
+  flex: 1; /* Take equal 50% half width of row */
+}
+
+/* Custom Select Arrow Styling Override */
+select.form-control {
+  appearance: none; /* Remove native browser OS select arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%252394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); /* Custom SVG drop arrow icon */
+  background-repeat: no-repeat; /* Do not repeat background arrow */
+  background-position: right 12px center; /* Position arrow on right side */
+  background-size: 16px; /* Size arrow SVG */
+  padding-right: 2.2rem; /* Add right padding so text does not overlap arrow */
+  cursor: pointer; /* Pointer cursor for dropdown select */
+}
+
+/* Primary Action Button Styling */
+.btn {
+  display: inline-flex; /* Inline flex layout */
+  align-items: center; /* Vertically center icon and label text */
+  justify-content: center; /* Horizontally center content */
+  gap: 0.5rem; /* Gap spacing */
+  padding: 0.8rem 1.4rem; /* Outer button padding */
+  border-radius: var(--radius-md); /* Rounded border radius */
+  font-family: inherit; /* Font family */
+  font-weight: 600; /* Semi-bold weight */
+  font-size: 0.95rem; /* Text font size */
+  border: none; /* Remove default border */
+  cursor: pointer; /* Pointer hover cursor */
+  transition: all var(--transition-fast); /* Smooth interactive hover transitions */
+  text-decoration: none; /* Remove link underline if rendered as anchor tag */
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); /* Indigo to violet gradient background */
+  color: #ffffff; /* White text color */
+  box-shadow: var(--shadow-glow); /* Ambient glow shadow */
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px); /* Slight upward lift on hover */
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45); /* Enhanced hover glow shadow */
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08); /* Semi-transparent button background */
+  color: var(--text-main); /* Text color */
+  border: 1px solid var(--card-border); /* Subtle border stroke */
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15); /* Slightly brighter background on hover */
+}
+
+.btn-block {
+  width: 100%; /* Stretch button across full width of form */
+}
+
+/* ==========================================
+   Toolbar: Search & Status Filters Card
+   ========================================== */
+.toolbar-card {
+  background: var(--card-bg); /* Glass container background */
+  backdrop-filter: blur(16px); /* Glass blur filter */
+  border: 1px solid var(--card-border); /* Card border stroke */
+  border-radius: var(--radius-lg); /* Border radius */
+  padding: 1.2rem; /* Inner padding */
+  box-shadow: var(--shadow-md); /* Card elevation shadow */
+  margin-bottom: 1.5rem; /* Separation before task cards list */
+  display: flex; /* Flex layout */
+  flex-direction: column; /* Stack search input above filter tabs */
+  gap: 1rem; /* Spacing gap */
+}
+
+.search-box {
+  position: relative; /* Position relative for search icon and clear button */
+  display: flex; /* Flex layout */
+  align-items: center; /* Vertically center icon */
+}
+
+.search-icon {
+  position: absolute; /* Absolutely position magnifying glass icon */
+  left: 14px; /* Left padding offset */
+  color: var(--text-subtle); /* Icon color */
+  font-size: 1rem; /* Icon size */
+}
+
+.search-control {
+  width: 100%; /* Full width */
+  padding: 0.75rem 2.5rem 0.75rem 2.6rem; /* Padding accounting for left search icon and right clear button */
+  background: var(--input-bg); /* Background color */
+  border: 1px solid var(--input-border); /* Border stroke */
+  border-radius: var(--radius-md); /* Border radius */
+  color: var(--text-main); /* Text color */
+  font-family: inherit; /* Font family */
+  font-size: 0.95rem; /* Font size */
+  outline: none; /* Remove focus outline ring */
+  transition: all var(--transition-fast); /* Focus transition */
+}
+
+.search-control:focus {
+  border-color: var(--accent-primary); /* Glowing indigo border on focus */
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* Focus ring shadow */
+}
+
+.clear-btn {
+  position: absolute; /* Position clear button on right side of search field */
+  right: 12px; /* Right offset */
+  background: none; /* Clear background */
+  border: none; /* Clear border */
+  color: var(--text-subtle); /* Color */
+  font-size: 1rem; /* Size */
+  cursor: pointer; /* Pointer cursor */
+}
+
+.clear-btn:hover {
+  color: var(--text-main); /* Highlight color on hover */
+}
+
+.filter-controls-row {
+  display: flex; /* Flex row layout */
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Space out status tabs on left, category dropdown on right */
+  gap: 1rem; /* Spacing gap */
+  flex-wrap: wrap; /* Wrap on small screens */
+}
+
+/* Status Filter Segmented Button Tabs */
+.status-tabs {
+  display: flex; /* Flex container */
+  background: var(--input-bg); /* Segmented background bar */
+  padding: 4px; /* Padding around tab buttons */
+  border-radius: var(--radius-md); /* Border radius */
+  border: 1px solid var(--input-border); /* Border stroke */
+}
+
+.tab-btn {
+  padding: 0.45rem 1.1rem; /* Inner tab button padding */
+  border: none; /* Clear border */
+  background: transparent; /* Transparent background */
+  color: var(--text-muted); /* Tab font color */
+  font-family: inherit; /* Inherit font family */
+  font-size: 0.88rem; /* Font size */
+  font-weight: 500; /* Medium font weight */
+  border-radius: var(--radius-sm); /* Corner radius */
+  cursor: pointer; /* Pointer hover cursor */
+  transition: all var(--transition-fast); /* Smooth active switch animation */
+}
+
+.tab-btn:hover {
+  color: var(--text-main); /* Main text color on hover */
+}
+
+.tab-btn.active {
+  background: var(--accent-primary); /* Vibrant active background indicator */
+  color: #ffffff; /* White font color */
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3); /* Subtle glow shadow */
+}
+
+.filter-select {
+  padding: 0.45rem 2rem 0.45rem 0.9rem; /* Dropdown inner padding */
+  background: var(--input-bg); /* Background color */
+  border: 1px solid var(--input-border); /* Border stroke */
+  border-radius: var(--radius-md); /* Corner radius */
+  color: var(--text-main); /* Text color */
+  font-family: inherit; /* Font family */
+  font-size: 0.88rem; /* Font size */
+  outline: none; /* Focus outline */
+  cursor: pointer; /* Cursor pointer */
+}
+
+/* ==========================================
+   Task Card Items List Section
+   ========================================== */
+.task-list {
+  display: flex; /* Vertical flex list layout */
+  flex-direction: column; /* Stack cards vertically */
+  gap: 1rem; /* Gap spacing between task item cards */
+}
+
+/* Individual Task Card Box */
+.task-card {
+  background: var(--card-bg); /* Glassmorphism background */
+  backdrop-filter: blur(14px); /* Glass blur filter */
+  border: 1px solid var(--card-border); /* Border stroke */
+  border-radius: var(--radius-md); /* Container border radius */
+  padding: 1.25rem 1.4rem; /* Card inner padding */
+  display: flex; /* Flex layout */
+  align-items: flex-start; /* Top align task content */
+  gap: 1.1rem; /* Spacing between checkbox and card body */
+  box-shadow: var(--shadow-sm); /* Subtle card shadow */
+  transition: all var(--transition-normal); /* Transition on hover and completion toggle */
+  position: relative; /* Position context */
+  overflow: hidden; /* Clip overflow contents */
+}
+
+.task-card:hover {
+  transform: translateY(-2px); /* Slight float upward on card hover */
+  border-color: rgba(99, 102, 241, 0.3); /* Highlight border on hover */
+  box-shadow: var(--shadow-md); /* Increase shadow elevation */
+}
+
+/* Priority Left Accent Border Indicator Bar */
+.task-card::before {
+  content: ''; /* Pseudo-element indicator bar */
+  position: absolute; /* Absolutely position along left card border */
+  top: 0; /* Top anchor */
+  left: 0; /* Left anchor */
+  bottom: 0; /* Bottom anchor */
+  width: 4px; /* Strip width */
+  background: var(--text-subtle); /* Default neutral color */
+  transition: background var(--transition-fast); /* Smooth transition */
+}
+
+.task-card[data-priority="High"]::before {
+  background: var(--color-danger); /* Red accent line for High priority */
+}
+
+.task-card[data-priority="Medium"]::before {
+  background: var(--color-warning); /* Amber accent line for Medium priority */
+}
+
+.task-card[data-priority="Low"]::before {
+  background: var(--color-success); /* Green accent line for Low priority */
+}
+
+/* Custom Animated Task Completion Checkbox */
+.checkbox-container {
+  display: flex; /* Flex layout */
+  align-items: center; /* Center align */
+  cursor: pointer; /* Pointer cursor */
+  margin-top: 2px; /* Top alignment tweak */
+}
+
+.task-checkbox {
+  display: none; /* Hide default native HTML input checkbox */
+}
+
+.custom-checkmark {
+  width: 22px; /* Fixed width */
+  height: 22px; /* Fixed height */
+  border: 2px solid var(--input-border); /* Outer border ring */
+  border-radius: 6px; /* Slightly rounded square */
+  display: flex; /* Flex layout */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  color: transparent; /* Hide checkmark icon initially */
+  font-size: 0.75rem; /* Icon font size */
+  transition: all var(--transition-fast); /* Smooth checked state animation */
+}
+
+.task-checkbox:checked + .custom-checkmark {
+  background: var(--color-success); /* Green filled background on check */
+  border-color: var(--color-success); /* Green border on check */
+  color: #ffffff; /* White checkmark icon */
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); /* Green glow effect */
+}
+
+/* Completed Task Visual State Styling */
+.task-card.completed {
+  opacity: 0.65; /* Lower opacity for finished tasks */
+  background: rgba(30, 41, 59, 0.45); /* Darker glass background */
+}
+
+.task-card.completed .task-title {
+  text-decoration: line-through; /* Strikethrough completed task title text */
+  color: var(--text-muted); /* Darken text color */
+}
+
+/* Task Content Main Container */
+.task-content {
+  flex: 1; /* Stretch to occupy remaining middle space */
+  display: flex; /* Flex column layout */
+  flex-direction: column; /* Stack title above description & tags */
+  gap: 0.4rem; /* Gap spacing */
+}
+
+.task-header-row {
+  display: flex; /* Flex row layout */
+  align-items: center; /* Center title and tags */
+  justify-content: space-between; /* Space out title on left, badges on right */
+  gap: 0.8rem; /* Gap spacing */
+}
+
+.task-title {
+  font-size: 1.05rem; /* Task title font size */
+  font-weight: 600; /* Semi-bold weight */
+  color: var(--text-main); /* Main font color */
+  line-height: 1.35; /* Comfortable line height */
+  word-break: break-word; /* Wrap long strings */
+}
+
+.task-description {
+  font-size: 0.88rem; /* Task description details size */
+  color: var(--text-muted); /* Muted text color */
+  line-height: 1.45; /* Line height */
+  white-space: pre-line; /* Retain line breaks in description */
+}
+
+/* Meta Tags Container Row (Category, Priority, Due Date) */
+.task-meta-row {
+  display: flex; /* Flex row */
+  align-items: center; /* Center meta badges */
+  gap: 0.6rem; /* Badge gap spacing */
+  flex-wrap: wrap; /* Wrap tags on mobile screens */
+  margin-top: 0.3rem; /* Top spacing margin */
+}
+
+/* Badge Base Styling */
+.badge {
+  display: inline-flex; /* Inline flex layout */
+  align-items: center; /* Center icon and label text */
+  gap: 0.35rem; /* Icon gap spacing */
+  padding: 0.2rem 0.65rem; /* Badge padding */
+  border-radius: 20px; /* Pill border radius */
+  font-size: 0.78rem; /* Pill font size */
+  font-weight: 500; /* Medium font weight */
+}
+
+/* Category Badge Styling */
+.badge-category {
+  background: rgba(255, 255, 255, 0.08); /* Subtle pill background */
+  color: var(--text-muted); /* Muted text color */
+  border: 1px solid var(--card-border); /* Subtle border stroke */
+}
+
+/* Priority Badges Dynamic Themes */
+.badge-priority-High {
+  background: var(--priority-high-bg); /* High priority red background */
+  color: var(--priority-high-text); /* High priority red text */
+}
+
+.badge-priority-Medium {
+  background: var(--priority-med-bg); /* Medium priority amber background */
+  color: var(--priority-med-text); /* Medium priority amber text */
+}
+
+.badge-priority-Low {
+  background: var(--priority-low-bg); /* Low priority green background */
+  color: var(--priority-low-text); /* Low priority green text */
+}
+
+/* Due Date Badge */
+.badge-due-date {
+  color: var(--text-subtle); /* Subtle caption color */
+  font-size: 0.78rem; /* Caption size */
+}
+
+.badge-due-date.past-due {
+  color: var(--color-danger); /* Red alert text if task deadline is past current date */
+  font-weight: 600; /* Bold weight indicator */
+}
+
+/* Task Card Action Buttons Container */
+.task-actions {
+  display: flex; /* Flex container for right action buttons */
+  align-items: center; /* Vertically center buttons */
+  gap: 0.4rem; /* Spacing gap */
+}
+
+.action-btn {
+  width: 34px; /* Action button fixed width */
+  height: 34px; /* Action button fixed height */
+  border-radius: var(--radius-sm); /* Corner radius */
+  background: transparent; /* Clear default background */
+  border: none; /* Remove border stroke */
+  color: var(--text-subtle); /* Icon default color */
+  font-size: 0.95rem; /* Icon size */
+  cursor: pointer; /* Pointer hover cursor */
+  display: flex; /* Flex layout */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  transition: all var(--transition-fast); /* Hover animation */
+}
+
+.action-btn-edit:hover {
+  background: rgba(99, 102, 241, 0.15); /* Soft indigo highlight background */
+  color: var(--accent-primary); /* Indigo icon color on hover */
+}
+
+.action-btn-delete:hover {
+  background: rgba(239, 68, 68, 0.15); /* Soft red highlight background */
+  color: var(--color-danger); /* Red icon color on hover */
+}
+
+/* ==========================================
+   Empty State View Placeholder
+   ========================================== */
+.empty-state {
+  background: var(--card-bg); /* Glass container background */
+  border: 1px dashed var(--card-border); /* Dashed outline border */
+  border-radius: var(--radius-lg); /* Container border radius */
+  padding: 3.5rem 2rem; /* Large inner padding */
+  text-align: center; /* Center align text and icon */
+  display: flex; /* Flex column layout */
+  flex-direction: column; /* Stack icon above heading */
+  align-items: center; /* Center align */
+  justify-content: center; /* Center align */
+}
+
+.empty-icon {
+  font-size: 3.2rem; /* Large icon size */
+  color: var(--text-subtle); /* Subtle color */
+  margin-bottom: 1rem; /* Bottom margin spacing */
+  opacity: 0.6; /* Soft opacity */
+}
+
+.empty-title {
+  font-size: 1.2rem; /* Empty heading title size */
+  font-weight: 600; /* Semi-bold weight */
+  color: var(--text-main); /* Text color */
+  margin-bottom: 0.4rem; /* Bottom margin */
+}
+
+.empty-desc {
+  font-size: 0.9rem; /* Empty caption description size */
+  color: var(--text-muted); /* Muted text color */
+  max-width: 320px; /* Limit paragraph width */
+}
+
+/* ==========================================
+   Modal Overlay Dialog Window
+   ========================================== */
+.modal-overlay {
+  position: fixed; /* Fix overlay to fill full viewport window */
+  top: 0; /* Anchor top */
+  left: 0; /* Anchor left */
+  right: 0; /* Anchor right */
+  bottom: 0; /* Anchor bottom */
+  background: rgba(15, 23, 42, 0.75); /* Darkened semi-transparent backdrop overlay */
+  backdrop-filter: blur(8px); /* Backdrop blur glass effect */
+  z-index: 1000; /* Keep modal window above all page content */
+  display: flex; /* Flex layout to center modal card */
+  align-items: center; /* Center modal vertically */
+  justify-content: center; /* Center modal horizontally */
+  padding: 1.5rem; /* Viewport edge padding */
+  opacity: 1; /* Default visible opacity */
+  transition: opacity var(--transition-normal); /* Smooth fade-in/fade-out modal transition */
+}
+
+.modal-card {
+  background: var(--card-bg-solid); /* Solid card background */
+  border: 1px solid var(--card-border); /* Container border stroke */
+  border-radius: var(--radius-lg); /* Border radius */
+  width: 100%; /* Stretch width */
+  max-width: 500px; /* Limit max modal width */
+  padding: 1.8rem; /* Inner padding */
+  box-shadow: var(--shadow-lg); /* Large elevation shadow */
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Scale bounce pop-in animation */
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.9); opacity: 0; } /* Initial scaled down state */
+  100% { transform: scale(1); opacity: 1; } /* Normal scale state */
+}
+
+.modal-header {
+  display: flex; /* Flex layout */
+  align-items: center; /* Vertically center header title and close button */
+  justify-content: space-between; /* Space out title on left, close icon on right */
+  margin-bottom: 1.4rem; /* Bottom margin */
+}
+
+.modal-title {
+  font-size: 1.25rem; /* Modal heading font size */
+  font-weight: 600; /* Semi-bold weight */
+  color: var(--text-main); /* Text color */
+  display: flex; /* Flex layout */
+  align-items: center; /* Vertically center icon */
+  gap: 0.5rem; /* Gap spacing */
+}
+
+.modal-title i {
+  color: var(--accent-primary); /* Accent color for icon */
+}
+
+.icon-btn-close {
+  background: none; /* Clear background */
+  border: none; /* Clear border */
+  color: var(--text-subtle); /* Icon color */
+  font-size: 1.2rem; /* Icon size */
+  cursor: pointer; /* Pointer cursor */
+}
+
+.icon-btn-close:hover {
+  color: var(--text-main); /* Highlight color on hover */
+}
+
+.checkbox-group {
+  margin-top: 1rem; /* Spacing above completion checkbox */
+}
+
+.custom-checkbox-label {
+  display: flex; /* Flex layout */
+  align-items: center; /* Center align checkbox and text label */
+  gap: 0.6rem; /* Gap spacing */
+  cursor: pointer; /* Pointer cursor */
+}
+
+.custom-checkbox-label input {
+  display: none; /* Hide default native checkbox */
+}
+
+.custom-checkbox-box {
+  width: 20px; /* Checkbox box width */
+  height: 20px; /* Checkbox box height */
+  border: 2px solid var(--input-border); /* Outer border stroke */
+  border-radius: 4px; /* Rounded corners */
+  transition: all var(--transition-fast); /* Smooth check transition */
+}
+
+.custom-checkbox-label input:checked + .custom-checkbox-box {
+  background: var(--color-success); /* Green fill when checked */
+  border-color: var(--color-success); /* Green border when checked */
+}
+
+.checkbox-text-label {
+  font-size: 0.92rem; /* Checkbox label text size */
+  color: var(--text-main); /* Text color */
+}
+
+.modal-footer {
+  display: flex; /* Flex layout */
+  align-items: center; /* Center action buttons */
+  justify-content: flex-end; /* Align buttons on right side */
+  gap: 0.8rem; /* Gap spacing */
+  margin-top: 1.6rem; /* Top margin spacing */
+}
+
+/* Utility Hidden Class */
+.hidden {
+  display: none !important; /* Force hide element from DOM flow */
+}
+
+/* ==========================================
+   Toast Notification Pop-ups Container
+   ========================================== */
+.toast-container {
+  position: fixed; /* Absolutely fix toast container to browser window */
+  bottom: 1.5rem; /* Anchor 1.5rem from bottom */
+  right: 1.5rem; /* Anchor 1.5rem from right */
+  z-index: 2000; /* Display above modal dialogs */
+  display: flex; /* Flex column layout */
+  flex-direction: column; /* Stack toast popups vertically */
+  gap: 0.75rem; /* Gap spacing between active toasts */
+  pointer-events: none; /* Ignore pointer clicks on container wrapper */
+}
+
+.toast {
+  pointer-events: auto; /* Enable clicks on individual toast popups */
+  background: var(--card-bg-solid); /* Solid card background */
+  border: 1px solid var(--card-border); /* Border stroke */
+  border-left: 4px solid var(--accent-primary); /* Left color indicator strip */
+  border-radius: var(--radius-md); /* Rounded corners */
+  padding: 0.9rem 1.2rem; /* Inner toast padding */
+  display: flex; /* Flex layout */
+  align-items: center; /* Vertically center icon and message */
+  gap: 0.8rem; /* Gap spacing */
+  box-shadow: var(--shadow-lg); /* Large elevation shadow */
+  color: var(--text-main); /* Text color */
+  font-size: 0.92rem; /* Font size */
+  min-width: 280px; /* Set minimum toast width */
+  animation: toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Slide-in animation */
+}
+
+@keyframes toastSlideIn {
+  0% { transform: translateX(100%); opacity: 0; } /* Initial offscreen right state */
+  100% { transform: translateX(0); opacity: 1; } /* Normal visible state */
+}
+
+.toast-success { border-left-color: var(--color-success); } /* Green indicator strip for success toast */
+.toast-success i { color: var(--color-success); } /* Green icon */
+
+.toast-danger { border-left-color: var(--color-danger); } /* Red indicator strip for danger toast */
+.toast-danger i { color: var(--color-danger); } /* Red icon */
+
+.toast-info { border-left-color: var(--accent-primary); } /* Indigo indicator strip for info toast */
+.toast-info i { color: var(--accent-primary); } /* Indigo icon */
+
+/* ==========================================
+   Responsive Breakpoints Layout Design
+   ========================================== */
+@media (max-width: 900px) {
+  .main-content {
+    grid-template-columns: 1fr; /* Switch to single stacked full width column on smaller tablets */
+  }
+
+  .task-form-card {
+    position: static; /* Remove sticky position on mobile layouts */
+  }
+}
+
+@media (max-width: 600px) {
+  .app-wrapper {
+    padding: 1.5rem 1rem; /* Reduce outer padding on mobile devices */
+  }
+
+  .stats-card {
+    flex-wrap: wrap; /* Allow metric items to wrap on narrow screens */
+    justify-content: center; /* Center metrics */
+  }
+
+  .stat-divider {
+    display: none; /* Hide vertical dividers on mobile view */
+  }
+
+  .form-row {
+    flex-direction: column; /* Stack input columns vertically */
+  }
+
+  .filter-controls-row {
+    flex-direction: column; /* Stack status tabs and category filter */
+    align-items: stretch; /* Stretch controls to full width */
+  }
+
+  .status-tabs {
+    justify-content: center; /* Center status tab buttons */
+  }
+}
